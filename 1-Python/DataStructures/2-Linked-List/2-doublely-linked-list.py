@@ -1,7 +1,10 @@
+# TODO: Optimize getting/setting node at certain index to take advantage of doublely-linked nature
+
 class Node:
-    def __init__(self, value=None):
+    def __init__(self, value=None, prevNode=None):
         self.value = value
         self.nextNode = None
+        self.prevNode = prevNode
 
     def setValue(self, newVal):
         self.value = newVal
@@ -14,6 +17,12 @@ class Node:
     
     def getNextNode(self):
         return self.nextNode
+
+    def setPrevNode(self, node):
+        self.prevNode = node
+    
+    def getPrevNode(self):
+        return self.prevNode
 
 class LinkedList:
     def __init__(self, head=None):
@@ -28,8 +37,11 @@ class LinkedList:
             self.head = node
         else:
             currNode = self.head
+            prevNode = None
             while (currNode.getNextNode() != None):
+                prevNode = currNode
                 currNode = currNode.getNextNode()
+            currNode.setPrevNode(prevNode)
             currNode.setNextNode(node)
         self.length += 1
 
@@ -40,7 +52,9 @@ class LinkedList:
         else:
             currNode = self.head
             while (currNode.getNextNode() != None):
+                prevNode = currNode
                 currNode = currNode.getNextNode()
+            currNode.setPrevNode(prevNode)
             currNode.setNextNode(node)
         self.length += 1
 
@@ -52,6 +66,7 @@ class LinkedList:
             currNode = currNode.getNextNode()
         nextNode = currNode.getNextNode()
         prevNode.setNextNode(nextNode)
+        nextNode.setPrevNode(prevNode)
         self.length -= 1
 
     def getNode(self, index):
