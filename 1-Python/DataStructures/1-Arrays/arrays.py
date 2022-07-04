@@ -1,35 +1,37 @@
 # Trivial using Lists
 # https://docs.python.org/3/tutorial/datastructures.html#more-on-lists
 
+# Initiallize list
 myArray = []
 
-myArray.append("hello") # Add item to end of list
+# Add item to end of list
+myArray.append("hello")
 myArray.append("world")
-
 print(myArray)
 
-myArray.insert(1, "between") # Add item in index position
-
+# Add item in index position, 0 indexed
+myArray.insert(1, "between")
 print(myArray)
 
-myArray.remove("hello") # Remove first item that matches item, or raises ValueError
-
+# Remove first item that matches item, or raises ValueError
+myArray.remove("hello")
 print(myArray)
 
-x = myArray.pop() # Remove item from end of list (or at index)
-
-print("Last item in myArray: ", x)
+# Remove item from end of list (or at index)
+x = myArray.pop()
+print("Last item in myArray:", x)
 print(myArray)
 
+# Populating list with data
 for i in range(5):
     myArray.append(i)
-
 print(myArray)
 
-myArray.clear() # Remove all items from list
-
+# Remove all items from list
+myArray.clear()
 print(myArray)
 
+# Built-in list methods
 myArray = ['a', 'b', 'c', 'b']
 index = myArray.index('b') # Get first index of item
 numB = myArray.count('b') # Get number of times item is in list
@@ -39,16 +41,13 @@ print("Index of first 'b': ", index)
 print("Number of 'b': ", numB)
 
 myArray.sort() # Sort list
-
-print(myArray)
+print("Sorted Array:", myArray)
 
 myArray.reverse() # Reverse order of items in list
-
 print(myArray)
 
 newArray = myArray.copy() # Copy (shallow) list to new variable
-
 newArray.pop()
 
-print(myArray)
-print(newArray)
+print("Original Array:", myArray)
+print("Copied Array:", newArray)
