@@ -33,7 +33,7 @@ class LinkedList:
             currNode.setNextNode(node)
         self.length += 1
 
-    def addVale(self, value):
+    def addValue(self, value):
         node = Node(value)
         if (self.length == 0):
             self.head = node
@@ -91,23 +91,18 @@ class LinkedList:
 node1 = Node("hello")
 node2 = Node("world")
 
-
 ll = LinkedList()
-
 print(ll)
 
 ll.addNode(node1)
-
 print(ll)
 
 ll.addNode(node2)
-ll.addVale(123)
-
+ll.addValue(123)
 print(ll)
 
-ll.setNodeVal(0, "goodbye")
-ll.setNodeVal(2, "im leaving")
-
+ll.setNodeVal(0, "foo")
+ll.setNodeVal(2, "bar")
 print(ll)
 
 retNode = ll.getNode(1)
@@ -117,5 +112,4 @@ retVal = ll.getNodeVal(2)
 print(retVal)
 
 ll.removeNode(1)
-
 print(ll)
