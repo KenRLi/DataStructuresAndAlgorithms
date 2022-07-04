@@ -59,12 +59,17 @@ class LinkedList:
         self.length += 1
 
     def insertVal(self, index, value):
-        currNode = self.head
-        for _ in range(index - 1):
-            currNode = currNode.getNextNode()
-        nextNode = currNode.getNextNode()
-        node = Node(value, nextNode)
-        currNode.setNextNode(node)
+        if (index == 0):
+            nextNode = self.head
+            node = Node(value, nextNode)
+            self.head = node
+        else:
+            currNode = self.head
+            for _ in range(index - 1):
+                currNode = currNode.getNextNode()
+            nextNode = currNode.getNextNode()
+            node = Node(value, nextNode)
+            currNode.setNextNode(node)
         self.length += 1
 
     def removeNode(self, index):
@@ -129,6 +134,9 @@ node3.setValue(456)
 
 ll.insertNode(0, node3)
 ll.insertVal(2, "third element")
+print(ll)
+
+ll.insertVal(0, "first element")
 print(ll)
 
 ll.setNodeVal(1, "foo")
