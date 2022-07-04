@@ -1,7 +1,7 @@
 class Node:
-    def __init__(self, value=None):
+    def __init__(self, value=None, nextNode=None):
         self.value = value
-        self.nextNode = None
+        self.nextNode = nextNode
 
     def setValue(self, newVal):
         self.value = newVal
@@ -42,6 +42,29 @@ class LinkedList:
             while (currNode.getNextNode() != None):
                 currNode = currNode.getNextNode()
             currNode.setNextNode(node)
+        self.length += 1
+
+    def insertNode(self, index, node):
+        if (index == 0):
+            nextNode = self.head
+            self.head = node
+            node.setNextNode(nextNode)
+        else:
+            currNode = self.head
+            for _ in range(index - 1):
+                currNode = currNode.getNextNode()
+            nextNode = currNode.getNextNode()
+            currNode.setNextNode(node)
+            node.setNextNode(nextNode)
+        self.length += 1
+
+    def insertVal(self, index, value):
+        currNode = self.head
+        for _ in range(index - 1):
+            currNode = currNode.getNextNode()
+        nextNode = currNode.getNextNode()
+        node = Node(value, nextNode)
+        currNode.setNextNode(node)
         self.length += 1
 
     def removeNode(self, index):
@@ -101,8 +124,15 @@ ll.addNode(node2)
 ll.addValue(123)
 print(ll)
 
-ll.setNodeVal(0, "foo")
-ll.setNodeVal(2, "bar")
+node3 = Node()
+node3.setValue(456)
+
+ll.insertNode(0, node3)
+ll.insertVal(2, "third element")
+print(ll)
+
+ll.setNodeVal(1, "foo")
+ll.setNodeVal(3, "bar")
 print(ll)
 
 retNode = ll.getNode(1)
