@@ -1,5 +1,3 @@
-# TODO: Optimize getting/setting node at certain index to take advantage of doublely-linked nature
-
 class Node:
     def __init__(self, value=None, prevNode=None):
         self.value = value
@@ -27,6 +25,7 @@ class Node:
 class LinkedList:
     def __init__(self, head=None):
         self.head = head
+        self.tail = head
         if head:
             self.length = 1
         else:
@@ -35,28 +34,57 @@ class LinkedList:
     def addNode(self, node):
         if (self.length == 0):
             self.head = node
+            self.tail = node
         else:
-            currNode = self.head
-            prevNode = None
-            while (currNode.getNextNode() != None):
-                prevNode = currNode
-                currNode = currNode.getNextNode()
-            currNode.setPrevNode(prevNode)
-            currNode.setNextNode(node)
+            currTail = self.tail
+            currTail.setNextNode(node)
+            node.setPrevNode(currTail)
+            self.tail = node
         self.length += 1
 
-    def addVale(self, value):
-        node = Node(value)
+    def addValue(self, value):
         if (self.length == 0):
+            node = Node(value)
             self.head = node
+            self.tail = node
         else:
-            currNode = self.head
-            while (currNode.getNextNode() != None):
-                prevNode = currNode
-                currNode = currNode.getNextNode()
-            currNode.setPrevNode(prevNode)
-            currNode.setNextNode(node)
+            currTail = self.tail
+            node = Node(value, currTail)
+            currTail.setNextNode(node)
+            self.tail = node
         self.length += 1
+
+    def insertNode(self, index, node):
+        if (index == 0):
+            nextNode = self.head
+            self.head = node
+            node.setNextNode(nextNode)
+            nextNode.setPrevNode(node)
+        elif (index == (self.length - 1)):
+            prevNode = self.tail
+            self.tail = node
+            node.setPrevNode(prevNode)
+            prevNode.setNextNode(node)
+        else:
+            startingNode = None
+            numToTraverse = None
+            direction = None
+            if (index <= (self.length/2)):
+                startingNode = self.head
+                numToTraverse = index
+                direction = +1
+            else:
+                startingNode = self.tail
+                numToTraverse = (self.length - index) - 1
+                direction = -1
+
+            
+            
+
+        self.length += 1
+
+    def insertVal(self, index, value):
+
 
     def removeNode(self, index):
         currNode = self.head
@@ -102,35 +130,3 @@ class LinkedList:
                 retStr += ", "
         retStr += "]"
         return retStr
-
-node1 = Node("hello")
-node2 = Node("world")
-
-
-ll = LinkedList()
-
-print(ll)
-
-ll.addNode(node1)
-
-print(ll)
-
-ll.addNode(node2)
-ll.addVale(123)
-
-print(ll)
-
-ll.setNodeVal(0, "goodbye")
-ll.setNodeVal(2, "im leaving")
-
-print(ll)
-
-retNode = ll.getNode(1)
-print(retNode.getValue())
-
-retVal = ll.getNodeVal(2)
-print(retVal)
-
-ll.removeNode(1)
-
-print(ll)
