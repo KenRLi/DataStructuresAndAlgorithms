@@ -1,8 +1,8 @@
 class Node:
-    def __init__(self, value=None, prevNode=None):
+    def __init__(self, value=None, prevNode=None, nextNode=None):
         self.value = value
-        self.nextNode = None
         self.prevNode = prevNode
+        self.nextNode = nextNode
 
     def setValue(self, newVal):
         self.value = newVal
@@ -23,10 +23,10 @@ class Node:
         return self.prevNode
 
 class LinkedList:
-    def __init__(self, head=None):
-        self.head = head
-        self.tail = head
-        if head:
+    def __init__(self, initNode=None):
+        self.head = initNode
+        self.tail = initNode
+        if initNode:
             self.length = 1
         else:
             self.length = 0
@@ -43,76 +43,105 @@ class LinkedList:
         self.length += 1
 
     def addValue(self, value):
-        if (self.length == 0):
-            node = Node(value)
-            self.head = node
-            self.tail = node
-        else:
-            currTail = self.tail
-            node = Node(value, currTail)
-            currTail.setNextNode(node)
-            self.tail = node
-        self.length += 1
+        node = Node(value)
+        self.addNode(node)
 
     def insertNode(self, index, node):
         if (index == 0):
             nextNode = self.head
-            self.head = node
-            node.setNextNode(nextNode)
             nextNode.setPrevNode(node)
+            node.setNextNode(nextNode)
+            self.head = node
         elif (index == (self.length - 1)):
             prevNode = self.tail
-            self.tail = node
-            node.setPrevNode(prevNode)
             prevNode.setNextNode(node)
+            node.setPrevNode(prevNode)
+            self.tail = node
         else:
-            startingNode = None
-            numToTraverse = None
-            direction = None
             if (index <= (self.length/2)):
-                startingNode = self.head
-                numToTraverse = index
+                currNode = self.head
+                numToTraverse = index - 1
                 direction = +1
             else:
-                startingNode = self.tail
+                currNode = self.tail
                 numToTraverse = (self.length - index) - 1
                 direction = -1
 
-            
-            
+            for _ in range(numToTraverse):
+                if (direction > 0):
+                    currNode = currNode.getNextNode()
+                else:
+                    currNode = currNode.getPrevNode()
 
+            if (direction > 0):
+                nextNode = currNode.getNextNode()
+                currNode.setNextNode(node)
+                nextNode.setPrevNode(node)
+                node.setPrevNode(currNode)
+                node.setNextNode(nextNode)
+            else:
+                nodeBefore = currNode.getPrevNode()
+                currNode.setPrevNode(node)
+                nodeBefore.setNextNode(node)
+                node.setPrevNode(nodeBefore)
+                node.setNextNode(currNode)
         self.length += 1
 
     def insertVal(self, index, value):
-
+        node = Node(value)
+        self.insertNode(index, node)
 
     def removeNode(self, index):
-        currNode = self.head
-        prevNode = None
-        for _ in range(index):
+        if (index <= (self.length/2)):
+            currNode = self.head
+            numToTraverse = index
+            direction = +1
+        else:
+            currNode = self.tail
+            numToTraverse = (self.length - index)
+            direction = -1
+
+        for _ in range(numToTraverse):
             prevNode = currNode
-            currNode = currNode.getNextNode()
-        nextNode = currNode.getNextNode()
-        prevNode.setNextNode(nextNode)
-        nextNode.setPrevNode(prevNode)
+            if (direction > 0):
+                currNode = currNode.getNextNode()
+            else:
+                currNode = currNode.getPrevNode()
+        
+        if (direction > 0):
+            nextNode = currNode.getNextNode()
+            prevNode.setNextNode(nextNode)
+            nextNode.setPrevNode(prevNode)
+        else:
+            nodeBefore = currNode.getPrevNode()
+            prevNode.setPrevNode(nodeBefore)
+            nodeBefore.setNextNode(prevNode)
+
         self.length -= 1
 
     def getNode(self, index):
-        currNode = self.head
-        for _ in range(index):
-            currNode = currNode.getNextNode()
+        if (index <= (self.length/2)):
+            currNode = self.head
+            numToTraverse = index
+            direction = +1
+        else:
+            currNode = self.tail
+            numToTraverse = (self.length - index)
+            direction = -1
+
+        for _ in range(numToTraverse):
+            if (direction > 0):
+                currNode = currNode.getNextNode()
+            else:
+                currNode = currNode.getPrevNode()
         return currNode
 
     def getNodeVal(self, index):
-        currNode = self.head
-        for _ in range(index):
-            currNode = currNode.getNextNode()
+        currNode = self.getNode(index)
         return currNode.getValue()
 
     def setNodeVal(self, index, value):
-        currNode = self.head
-        for _ in range(index):
-            currNode = currNode.getNextNode()
+        currNode = self.getNode(index)
         currNode.setValue(value)
 
     def __str__(self):
@@ -130,3 +159,39 @@ class LinkedList:
                 retStr += ", "
         retStr += "]"
         return retStr
+
+node1 = Node("hello")
+node2 = Node("world")
+
+ll = LinkedList()
+print(ll)
+
+ll.addNode(node1)
+print(ll)
+
+ll.addNode(node2)
+ll.addValue(123)
+print(ll)
+
+node3 = Node()
+node3.setValue(456)
+
+ll.insertNode(0, node3)
+ll.insertVal(2, "third element")
+print(ll)
+
+ll.insertVal(0, "first element")
+print(ll)
+
+ll.setNodeVal(1, "foo")
+ll.setNodeVal(3, "bar")
+print(ll)
+
+retNode = ll.getNode(1)
+print(retNode.getValue())
+
+retVal = ll.getNodeVal(2)
+print(retVal)
+
+ll.removeNode(1)
+print(ll)

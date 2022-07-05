@@ -35,14 +35,7 @@ class LinkedList:
 
     def addValue(self, value):
         node = Node(value)
-        if (self.length == 0):
-            self.head = node
-        else:
-            currNode = self.head
-            while (currNode.getNextNode() != None):
-                currNode = currNode.getNextNode()
-            currNode.setNextNode(node)
-        self.length += 1
+        self.addNode(node)
 
     def insertNode(self, index, node):
         if (index == 0):
@@ -59,18 +52,8 @@ class LinkedList:
         self.length += 1
 
     def insertVal(self, index, value):
-        if (index == 0):
-            nextNode = self.head
-            node = Node(value, nextNode)
-            self.head = node
-        else:
-            currNode = self.head
-            for _ in range(index - 1):
-                currNode = currNode.getNextNode()
-            nextNode = currNode.getNextNode()
-            node = Node(value, nextNode)
-            currNode.setNextNode(node)
-        self.length += 1
+        node = Node(value)
+        self.insertNode(index, node)
 
     def removeNode(self, index):
         currNode = self.head
@@ -89,15 +72,11 @@ class LinkedList:
         return currNode
 
     def getNodeVal(self, index):
-        currNode = self.head
-        for _ in range(index):
-            currNode = currNode.getNextNode()
+        currNode = self.getNode(index)
         return currNode.getValue()
 
     def setNodeVal(self, index, value):
-        currNode = self.head
-        for _ in range(index):
-            currNode = currNode.getNextNode()
+        currNode = self.getNode(index)
         currNode.setValue(value)
 
     def __str__(self):
